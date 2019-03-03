@@ -28,7 +28,7 @@ def webhook():
     bot.set_webhook(url = WEBHOOK_LINK + BOT_TOKEN)
     return '!', 200
 
-@application.route('/tx')
+@application.route('/tx', methods = ['POST'])
 def tx():
     addressFrom = request.form.get('from')
     addressTo = request.form.get('to')
@@ -37,6 +37,7 @@ def tx():
 
 if __name__ == '__main__':
     if DEBUG_MODE:
+        bot.remove_webhook()
         bot.polling()
     else:
         application.run(
