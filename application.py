@@ -6,9 +6,16 @@ from flask import Flask, request
 bot = telebot.TeleBot(BOT_TOKEN)
 application = Flask(__name__)
 
+chatIds = {}
+
 @bot.message_handler(commands = ['start'])
 def startMessage(message):
     bot.send_message(message.chat.id, 'Start')
+
+@bot.message_handler(func=lambda message: True)
+def textMessage(message):
+    chatIds.update({message.text: message.chat.id})
+    bot.send_message(message.chat.id, 'Key updated')
 
 @application.route('/' + BOT_TOKEN, methods = ['POST'])
 def getMessage():
@@ -23,7 +30,10 @@ def webhook():
 
 @application.route('/tx')
 def tx():
-    pass
+    addressFrom = request.form.get('from')
+    addressTo = request.form.get('to')
+    value = request.form.get('value')
+    bot.send_message(chatIds.get(addressFrom), addressFrom + ' ' + addressTo + ' ' + value)
 
 if __name__ == '__main__':
     if DEBUG_MODE:
