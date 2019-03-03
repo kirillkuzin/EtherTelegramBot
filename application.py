@@ -34,6 +34,7 @@ def tx():
     addressTo = request.form.get('to')
     value = request.form.get('value')
     bot.send_message(chatIds.get(addressFrom), addressFrom + ' ' + addressTo + ' ' + value)
+    return '', 200
 
 if __name__ == '__main__':
     if DEBUG_MODE:
