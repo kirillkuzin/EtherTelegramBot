@@ -48,7 +48,7 @@ def tx():
     data = str(request.form.get('data'))
     tx = ethereum.buildTransaction(fromAddress, toAddress, value)
     txId = redis.addNewTx(tx)
-    bot.send_message(0, 'New tx:', reply_markup = acceptTxMarkup(txId))
+    bot.send_message(0, 'New tx:', reply_markup = confirmTxMarkup(txId))
     return '', 200
 
 if __name__ == '__main__':
